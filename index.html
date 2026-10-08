@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- This page is public even though the app behind it is not: keep it free of catalogue detail -->
+    <title>Groovy Showcase</title>
+    <meta name="description" content="Groovy Fragrances showcase. Sign in required." />
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- Installable as an app: its name, icons and colours are in public/manifest.webmanifest.
+         These files are public too, and the same rule applies to them. -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#0c0c0e" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Showcase" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- Google Fonts for Luxury Fragrance Typography -->
+    <!-- Apply the saved theme before first paint, so the page never flashes the default one -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem('groovy-theme');
+        if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+      } catch (e) {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Great+Vibes&family=Alex+Brush&family=Kaushan+Script&display=swap" rel="stylesheet" crossorigin="anonymous">
+      <style id="lock-style">
+/* Styles for the public login page (Noir Gold). The app's own stylesheet is inside the
+   encrypted bundle, so this page cannot rely on it. Removed once the app is unlocked. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: radial-gradient(120% 90% at 50% 0%, #1c150a 0%, #0c0c0e 55%, #08080a 100%) fixed;
+  color: #f4ede4;
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#lock {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.lock-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 36px 28px 30px;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(69, 26, 3, 0.28), #120f0a 45%, #0a0a0c);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+}
+
+.lock-mark {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.22), #000);
+  color: #fcd34d;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.lock-title {
+  margin: 0;
+  color: #fef08a;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lock-sub {
+  margin: 6px 0 22px;
+  color: rgba(253, 230, 138, 0.8);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+}
+
+.lock-status {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.lock-form {
+  text-align: left;
+}
+
+.lock-field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.lock-field span {
+  display: block;
+  margin-bottom: 6px;
+  color: #fbbf24;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lock-field input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  /* 16px stops phones and tablets zooming the page when the field takes focus */
+  font-size: 16px;
+}
+
+.lock-field input:focus {
+  outline: none;
+  border-color: #fbbf24;
+}
+
+.lock-show {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: #cbd5e1;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lock-show input {
+  width: 16px;
+  height: 16px;
+  accent-color: #f59e0b;
+}
+
+.lock-error {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  background: rgba(244, 63, 94, 0.14);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  border-radius: 10px;
+  color: #fecdd3;
+  font-size: 14px;
+}
+
+.lock-button {
+  width: 100%;
+  padding: 13px 16px;
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+  border: 0;
+  border-radius: 12px;
+  color: #000;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lock-button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+}
+
+.lock-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+[hidden] {
+  display: none !important;
+}
+</style>
+  </head>
+  <body>
+<div id="lock">
+<main class="lock-card" aria-labelledby="lock-title">
+  <div class="lock-mark" aria-hidden="true">G</div>
+  <h1 id="lock-title" class="lock-title">Groovy Fragrances</h1>
+  <p class="lock-sub">Sign in to open the showcase</p>
+
+  <p id="lock-status" class="lock-status" role="status">Checking this device…</p>
+
+  <form id="lock-form" class="lock-form" hidden novalidate>
+    <label class="lock-field">
+      <span>Username</span>
+      <input
+        id="lock-username"
+        name="username"
+        type="text"
+        autocomplete="username"
+        autocapitalize="none"
+        autocorrect="off"
+        spellcheck="false"
+        required
+      />
+    </label>
+
+    <label class="lock-field">
+      <span>Password</span>
+      <input id="lock-password" name="password" type="password" autocomplete="current-password" required />
+    </label>
+
+    <label class="lock-show">
+      <input id="lock-show" type="checkbox" />
+      <span>Show password</span>
+    </label>
+
+    <p id="lock-error" class="lock-error" role="alert" hidden></p>
+
+    <button id="lock-submit" type="submit" class="lock-button">Sign in</button>
+  </form>
+</main>
+</div>
+<script>
+// Unlocks the published app. scripts/protect.mjs inlines this into the public index.html and
+// fills in the placeholder constants (the payload and body class here, the offline pair below).
+//
+// The app is shipped as one encrypted file. Nothing here knows the username or password, or a
+// hash of them: the credentials derive a key, and they were right if that key decrypts the
+// file. The file format and the key derivation must match scripts/protect.mjs exactly.
+(() => {
+  const PAYLOAD_URL = 'app.enc';
+  const APP_BODY_CLASS = 'bg-bar text-ink antialiased selection:bg-selection/30 selection:text-selection-ink overflow-x-hidden';
+
+  // File layout: magic (4) | PBKDF2 iterations, uint32 BE (4) | salt (16) | IV (12) | ciphertext.
+  // The first 36 bytes are also the AES-GCM additional data, so they cannot be altered.
+  const MAGIC = 'GRV1';
+  const HEADER_BYTES = 36;
+
+  // Where the unlocked key is remembered on this device
+  const DB_NAME = 'groovy-lock';
+  const STORE = 'keys';
+  const KEY_ID = 'site';
+
+  const $ = id => document.getElementById(id);
+
+  // ---- Remembered key (IndexedDB). All best effort: without it the form is simply shown.
+  const openDb = () =>
+    new Promise((resolve, reject) => {
+      const request = indexedDB.open(DB_NAME, 1);
+      request.onupgradeneeded = () => request.result.createObjectStore(STORE);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+
+  const withStore = async (mode, run) => {
+    const db = await openDb();
+    try {
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, mode);
+        const request = run(tx.objectStore(STORE));
+        tx.oncomplete = () => resolve(request.result);
+        tx.onerror = tx.onabort = () => reject(tx.error);
+      });
+    } finally {
+      db.close();
+    }
+  };
+
+  const loadKey = () => withStore('readonly', store => store.get(KEY_ID)).catch(() => undefined);
+  const saveKey = key => withStore('readwrite', store => store.put(key, KEY_ID)).catch(() => undefined);
+  const forgetKey = () => withStore('readwrite', store => store.delete(KEY_ID)).catch(() => undefined);
+
+  // ---- Crypto
+  const parsePayload = bytes => {
+    const magic = String.fromCharCode(...bytes.subarray(0, 4));
+    if (bytes.length <= HEADER_BYTES || magic !== MAGIC) throw new Error('Unrecognised app file');
+    return {
+      iterations: new DataView(bytes.buffer, bytes.byteOffset).getUint32(4),
+      salt: bytes.subarray(8, 24),
+      iv: bytes.subarray(24, HEADER_BYTES),
+      header: bytes.subarray(0, HEADER_BYTES),
+      data: bytes.subarray(HEADER_BYTES),
+    };
+  };
+
+  // The username ignores case; the password is exact. Surrounding spaces are dropped from both,
+  // as scripts/protect.mjs does when it encrypts.
+  const credentialBytes = (username, password) =>
+    new TextEncoder().encode(`${username.trim().toLowerCase().normalize('NFKC')}\n${password.trim().normalize('NFKC')}`);
+
+  const deriveKey = async (username, password, payload) => {
+    const material = await crypto.subtle.importKey('raw', credentialBytes(username, password), 'PBKDF2', false, [
+      'deriveKey',
+    ]);
+    // Not extractable: once stored, the key can be used on this device but not read back out
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', hash: 'SHA-256', salt: payload.salt, iterations: payload.iterations },
+      material,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+  };
+
+  // Rejects for a wrong key and for a file that has been altered in any way
+  const decrypt = (key, payload) =>
+    crypto.subtle.decrypt({ name: 'AES-GCM', iv: payload.iv, additionalData: payload.header }, key, payload.data);
+
+  // ---- Starting the app
+  const startApp = plaintext => {
+    const { css, js } = JSON.parse(new TextDecoder().decode(plaintext));
+
+    $('lock').remove();
+    $('lock-style').remove();
+
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+
+    document.body.className = APP_BODY_CLASS;
+    const root = document.createElement('div');
+    root.id = 'root';
+    document.body.appendChild(root);
+
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.textContent = js;
+    document.head.appendChild(script);
+  };
+
+  // Used by the app's "Sign out" button
+  window.groovyLock = {
+    signOut: async () => {
+      await forgetKey();
+      location.reload();
+    },
+  };
+
+  // ---- Page
+  const showMessage = text => {
+    $('lock-form').hidden = true;
+    $('lock-status').hidden = false;
+    $('lock-status').textContent = text;
+  };
+
+  const showForm = () => {
+    $('lock-status').hidden = true;
+    $('lock-form').hidden = false;
+    $('lock-username').focus();
+  };
+
+  const boot = async () => {
+    if (!window.crypto || !crypto.subtle) {
+      showMessage('This page needs a secure (https) connection to sign in.');
+      return;
+    }
+
+    let payload;
+    try {
+      // "no-cache" revalidates on every load, so a new deployment is picked up at once
+      const response = await fetch(PAYLOAD_URL, { cache: 'no-cache' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      payload = parsePayload(new Uint8Array(await response.arrayBuffer()));
+    } catch {
+      showMessage('The app could not be loaded. Check the connection and reload the page.');
+      return;
+    }
+
+    // A device that has signed in before goes straight in
+    const remembered = await loadKey();
+    if (remembered) {
+      try {
+        startApp(await decrypt(remembered, payload));
+        return;
+      } catch {
+        // The password has been changed since this device signed in
+        await forgetKey();
+      }
+    }
+
+    const form = $('lock-form');
+    const error = $('lock-error');
+    const submit = $('lock-submit');
+    const password = $('lock-password');
+
+    $('lock-show').addEventListener('change', event => {
+      password.type = event.target.checked ? 'text' : 'password';
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const username = $('lock-username').value;
+      error.hidden = true;
+
+      if (!username.trim() || !password.value) {
+        error.textContent = 'Enter the username and password.';
+        error.hidden = false;
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Unlocking…';
+      try {
+        const key = await deriveKey(username, password.value, payload);
+        const plaintext = await decrypt(key, payload);
+        await saveKey(key);
+        startApp(plaintext);
+      } catch {
+        error.textContent = 'Incorrect username or password.';
+        error.hidden = false;
+        password.value = '';
+        password.focus();
+        submit.disabled = false;
+        submit.textContent = 'Sign in';
+      }
+    });
+
+    showForm();
+  };
+
+  // ---- Offline copy (login/sw.js). Best effort: the page works the same without it.
+  // scripts/protect.mjs sets OFFLINE. "off" removes what an earlier build left on this device.
+  const OFFLINE = 'on';
+  const OFFLINE_CACHE = 'groovy-showcase-offline';
+
+  const setUpOffline = () => {
+    if (!('serviceWorker' in navigator)) return;
+
+    if (OFFLINE !== 'on') {
+      navigator.serviceWorker
+        .getRegistration()
+        .then(found => found && found.unregister())
+        .catch(() => {});
+      if (window.caches) caches.delete(OFFLINE_CACHE).catch(() => {});
+      return;
+    }
+
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+    // An installed app asks the browser to keep what this site has saved (the remembered key
+    // and the offline copy) rather than clear it when the device runs short of space
+    const installed = matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches;
+    if (installed && navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  };
+
+  if (document.readyState === 'complete') setUpOffline();
+  else window.addEventListener('load', setUpOffline);
+
+  boot();
+})();
+</script>
+  </body>
+</html>
+
